@@ -1,0 +1,14 @@
+{
+  "name": "ts-chrome-timer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "GmanPark@2018",
+  "license": "MIT",
+  "dependencies": {
+    "@types/chrome": "0.0.72",
+    "typescript": "^3.0.1"
+  }
+}
