@@ -123,5 +123,10 @@
       }
     }
   },
-  "defaultProject": "ts-boulevard"
+  "defaultProject": "ts-boulevard",
+  "schematics": {
+    "@schematics/angular:component": {
+      "styleext": "scss"
+    }
+  }
 }
