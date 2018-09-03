@@ -1,12 +1,11 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   imports: [
     RouterModule.forRoot([
       { path: '', redirectTo: 'home', pathMatch: 'full' },
-      { path: 'home', loadChildren: './home/home-routing.module#HomeRoutingModule' },
-      // { path: '**', component: PageNotFoundComponent }
+      { path: 'home', loadChildren: './home/home-routing.module#HomeRoutingModule' }
     ])
   ],
   exports: [RouterModule]
