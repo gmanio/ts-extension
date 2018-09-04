@@ -1,8 +1,12 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+
 import { from } from 'rxjs/internal/observable/from';
-import { delay, switchMap, timeout } from 'rxjs/operators';
+import { concatMap, delay, map, switchMap, throttleTime, timeout } from 'rxjs/operators';
 import { of } from 'rxjs/internal/observable/of';
-import { asyncScheduler } from 'rxjs/index';
+import { interval } from 'rxjs/internal/observable/interval';
+import { timer } from 'rxjs/internal/observable/timer';
+import { zip } from 'rxjs/internal/observable/zip';
 
 @Component({
   selector: 'app-home',
@@ -13,16 +17,20 @@ import { asyncScheduler } from 'rxjs/index';
 
 export class HomeComponent implements OnInit {
   heroes = [1, 2, 3, 4, 6];
-
-  constructor() {
+  //http://supportportal.skplanet.com/Cafeteria/User/WeekMenu.aspx?Date=20180902
+  constructor(private http: HttpClient) {
+    this.http.get('http://supportportal.skplanet.com/Cafeteria/User/WeekMenu.aspx?Date=20180902')
+      .subscribe((data)=>{
+        debugger;
+      })
   }
 
   ngOnInit() {
-    const observable = from([1, 2, 3, 4, 5, 6, 7, 8, 9])
-    // .pipe(switchMap(data => of(data)))
-      .subscribe((data) => {
-        console.log(data);
-        this.heroes.push(data);
+    from([1, 2, 3, 4, 5, 6, 7, 8, 9])
+      .pipe(()=>interval(1000))
+      .subscribe((val) => {
+        console.log(val);
+        this.heroes.push(val);
       });
   }
 }
