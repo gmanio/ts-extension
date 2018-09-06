@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
+/**
+ * Lazy Module loading for code splitting
+ */
 @NgModule({
   imports: [
     RouterModule.forRoot([

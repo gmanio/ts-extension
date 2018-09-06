@@ -1,8 +1,9 @@
-<p>
-  home works!
-</p>
-<ul class="heroes">
-  <li *ngFor="let hero of heroes">
-    <app-home-card></app-home-card>
+<ul class="heroes" *ngIf="(videos$ | async)?.length !=0 ">
+  <p>
+    home works!
+  </p>
+  <li *ngFor="let video of (videos$ | async)">
+    {{video}}
+    <app-home-card [video]="video"></app-home-card>
   </li>
 </ul>

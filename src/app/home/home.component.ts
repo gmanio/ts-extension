@@ -1,12 +1,14 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 
-import { from } from 'rxjs/internal/observable/from';
-import { concatMap, delay, map, switchMap, throttleTime, timeout } from 'rxjs/operators';
+import { YoutubeService } from '../services/youtube.service';
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+import { combineAll, delay, map, merge, mergeAll, mergeMap, scan, share, switchMap, toArray } from 'rxjs/operators';
+import { Observable } from 'rxjs/internal/Observable';
 import { of } from 'rxjs/internal/observable/of';
 import { interval } from 'rxjs/internal/observable/interval';
-import { timer } from 'rxjs/internal/observable/timer';
+import { from } from 'rxjs/internal/observable/from';
 import { zip } from 'rxjs/internal/observable/zip';
+import { timer } from 'rxjs/internal/observable/timer';
 
 @Component({
   selector: 'app-home',
@@ -16,21 +18,74 @@ import { zip } from 'rxjs/internal/observable/zip';
 })
 
 export class HomeComponent implements OnInit {
-  heroes = [1, 2, 3, 4, 6];
-  //http://supportportal.skplanet.com/Cafeteria/User/WeekMenu.aspx?Date=20180902
-  constructor(private http: HttpClient) {
-    this.http.get('http://supportportal.skplanet.com/Cafeteria/User/WeekMenu.aspx?Date=20180902')
-      .subscribe((data)=>{
-        debugger;
-      })
+  public videos$;
+
+  constructor(private youtube: YoutubeService) {
   }
 
   ngOnInit() {
-    from([1, 2, 3, 4, 5, 6, 7, 8, 9])
-      .pipe(()=>interval(1000))
-      .subscribe((val) => {
-        console.log(val);
-        this.heroes.push(val);
-      });
+    // async video array
+    this.videos$ = from([1, 2, 3]).pipe(
+      map(x => {
+        console.log('test');
+        console.log(x);
+        return x + x;
+      }),
+      toArray()
+    );
+
+
+    this.videos$ = this.youtube.loadable
+      .pipe(
+        map(isAvailable => {
+          if ( isAvailable ) {
+            const htOption = {
+              part: 'snippet',
+              chart: 'mostPopular',
+              regionCode: 'KR',
+              maxResults: '20'
+            };
+
+            return of(this.youtube.getList(htOption));
+          }
+        }),
+        map((response) => {
+          debugger;
+        })
+      );
+    // .pipe(map(isAvailable => {
+    //   // if ( isAvailable ) {
+    //   //   const htOption = {
+    //   //     part: 'snippet',
+    //   //     chart: 'mostPopular',
+    //   //     regionCode: 'KR',
+    //   //     maxResults: '20'
+    //   //   };
+    //   //   return of([1,2,3])
+    //   // }
+    //   return of([1])
+    //   // .pipe(map((response: { result: { items: any[] } }) => {
+    //   //   debugger;
+    //   //   return response;
+    //   // }));
+    // }))
+//       .subscribe(isAvailable => {
+//         if ( isAvailable ) {
+//           const htOption = {
+//             part: 'snippet',
+//             chart: 'mostPopular',
+//             regionCode: 'KR',
+//             maxResults: '20'
+//           };
+
+//           this.videos$.next([1, 2, 3]);
+//           //this.youtube.getList(htOption);
+//           // .pipe(map((response: { result: { items: any[] } }) => {
+//           //   debugger;
+//           //   return response;
+//           // }));
+//         }
+//       });
   }
+
 }
