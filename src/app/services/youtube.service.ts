@@ -8,6 +8,7 @@ function getWindow(): any {
 @Injectable({
   providedIn: 'root'
 })
+
 export class YoutubeService {
   public loadable: EventEmitter<boolean> = new EventEmitter();
   private API_KEY = 'AIzaSyBvSlnkuiWfNkS19raUIYDldAEbCIdJK2I';
@@ -29,7 +30,5 @@ export class YoutubeService {
     this.loadable.emit(true);
   }
 
-  public getList(htOption: {}) {
-    return from(this.client.youtube.videos.list(htOption));
-  }
+  public getList = (htOption) => from(this.client.youtube.videos.list(htOption));
 }
